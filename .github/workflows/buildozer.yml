@@ -27,8 +27,15 @@ jobs:
             libffi-dev libssl-dev libltdl-dev python3-pip
           pip install --upgrade pip
           pip install cython==0.29.37
-          pip install python-for-android==2024.1.21
+          pip install python-for-android
           pip install kivy==2.3.1
+
+      - name: Patch android recipe for Cython build isolation
+        run: |
+          RECIPE=$(python -c "import pythonforandroid.recipes.android; import os; print(os.path.dirname(pythonforandroid.recipes.android.__file__))")
+          echo "[build-system]" > "$RECIPE/src/pyproject.toml"
+          echo 'requires = ["setuptools", "wheel", "Cython>=0.29,<3.1"]' >> "$RECIPE/src/pyproject.toml"
+          echo 'build-backend = "setuptools.build_meta"' >> "$RECIPE/src/pyproject.toml"
 
       - name: Build APK
         run: |
@@ -36,6 +43,7 @@ jobs:
           export ANDROIDNDK="$ANDROID_NDK_HOME"
           export ANDROIDAPI="34"
           export ANDROIDMINAPI="21"
+          export P4A_IGNORE_HOST_PYTHON=1
           python -m pythonforandroid.toolchain apk \
             --private . \
             --package org.liuziqi \
