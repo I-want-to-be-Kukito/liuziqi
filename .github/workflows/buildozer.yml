@@ -30,6 +30,16 @@ jobs:
           pip install python-for-android
           pip install kivy==2.3.1
 
+      - name: Patch android recipe for Cython build isolation
+        run: |
+          RECIPE=$(python3 -c "import pythonforandroid.recipes.android; import os; print(os.path.dirname(pythonforandroid.recipes.android.__file__))")
+          echo "Creating pyproject.toml in $RECIPE/src"
+          cat > "$RECIPE/src/pyproject.toml" << 'EOF'
+      [build-system]
+      requires = ["setuptools", "wheel", "Cython>=0.29,<3.1"]
+      build-backend = "setuptools.build_meta"
+      EOF
+
       - name: Build APK
         run: |
           export ANDROIDSDK="$ANDROID_HOME"
