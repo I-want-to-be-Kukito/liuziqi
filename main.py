@@ -683,4 +683,14 @@ class SixInARowApp(App):
 
 
 if __name__ == '__main__':
-    SixInARowApp().run()
+    try:
+        SixInARowApp().run()
+    except Exception:
+        import traceback, os
+        try:
+            log_path = os.path.join(os.getcwd(), 'liuziqi_crash.log')
+            with open(log_path, 'w') as f:
+                traceback.print_exc(file=f)
+        except Exception:
+            pass
+        raise
