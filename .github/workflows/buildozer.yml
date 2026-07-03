@@ -50,7 +50,7 @@ jobs:
             --name "liuziqi" \
             --version 1.0 \
             --bootstrap sdl2 \
-            --requirements python3,kivy,cython \
+            --requirements python3,kivy \
             --arch arm64-v8a \
             --debug 2>&1
 
