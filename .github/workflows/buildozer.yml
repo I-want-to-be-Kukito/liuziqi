@@ -36,13 +36,14 @@ jobs:
           export ANDROIDNDK="$ANDROID_NDK_HOME"
           export ANDROIDAPI="34"
           export ANDROIDMINAPI="21"
+          export P4A_IGNORE_HOST_PYTHON=1
           python -m pythonforandroid.toolchain apk \
             --private . \
             --package org.liuziqi \
             --name "liuziqi" \
             --version 1.0 \
             --bootstrap sdl2 \
-            --requirements python3,kivy \
+            --requirements python3,kivy,cython \
             --arch arm64-v8a \
             --debug 2>&1
 
