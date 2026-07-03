@@ -26,9 +26,9 @@ jobs:
             autoconf libtool pkg-config zlib1g-dev libncurses-dev \
             libffi-dev libssl-dev libltdl-dev python3-pip
           pip install --upgrade pip
-          pip install cython
-          pip install git+https://github.com/kivy/python-for-android.git
-          pip install kivy
+          pip install cython==0.29.37
+          pip install python-for-android==2024.11.17
+          pip install kivy==2.3.1
 
       - name: Build APK
         run: |
@@ -36,17 +36,17 @@ jobs:
           export ANDROIDNDK="$ANDROID_NDK_HOME"
           export ANDROIDAPI="34"
           export ANDROIDMINAPI="21"
+          export P4A_IGNORE_HOST_PYTHON=1
           
-          p4a apk \
+          python -m pythonforandroid.toolchain apk \
             --private . \
             --package org.liuziqi \
-            --name "六子棋" \
+            --name "liuziqi" \
             --version 1.0 \
             --bootstrap sdl2 \
             --requirements python3,kivy \
             --arch arm64-v8a \
-            --permission INTERNET \
-            --debug
+            --debug 2>&1
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
