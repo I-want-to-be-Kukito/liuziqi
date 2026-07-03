@@ -9,16 +9,12 @@ version = 1.0
 requirements = python3,kivy
 orientation = portrait
 osx.package_type = app
-presplash.filename =
-icon.filename =
-android.api = 30
+android.api = 34
 android.minapi = 21
-android.sdk = 34
 android.ndk = 25c
 android.accept_sdk_license = True
-android.arch = arm64-v8a
+android.archs = arm64-v8a
 android.permissions =
-android.private_storage = True
 android.numeric_version = 0100
 
 [buildozer]
