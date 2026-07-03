@@ -32,16 +32,10 @@ jobs:
 
       - name: Patch android recipe for Cython build isolation
         run: |
-          python3 -c "
-import os
-recipe = os.path.dirname(__import__('pythonforandroid.recipes.android', fromlist=['']).__file__)
-with open(os.path.join(recipe, 'src', 'pyproject.toml'), 'w') as f:
-    f.write('''[build-system]
-requires = [\"setuptools\", \"wheel\", \"Cython>=0.29,<3.1\"]
-build-backend = \"setuptools.build_meta\"
-''')
-print('Created pyproject.toml in', os.path.join(recipe, 'src'))
-"
+          RECIPE=$(python -c "import pythonforandroid.recipes.android; import os; print(os.path.dirname(pythonforandroid.recipes.android.__file__))")
+          echo "[build-system]" > "$RECIPE/src/pyproject.toml"
+          echo 'requires = ["setuptools", "wheel", "Cython>=0.29,<3.1"]' >> "$RECIPE/src/pyproject.toml"
+          echo 'build-backend = "setuptools.build_meta"' >> "$RECIPE/src/pyproject.toml"
 
       - name: Build APK
         run: |
